@@ -54,16 +54,27 @@ def scrape_info():
     url = 'https://twitter.com/marswxreport?lang=en/'
     browser.visit(url)
 
+    # html = browser.html
+    # soup = BeautifulSoup(html, "html.parser")
+
+    # results = soup.find_all('div', class_="content")
+
+    # mars_weather = results[0].find('p', class_="TweetTextSize TweetTextSize--normal js-tweet-text tweet-text").text
+    # sep = 'pic.twitter'
+    # mars_weather = mars_weather.split(sep, 1)[0]
+    # mars_weather = mars_weather.replace("\n", ", ")
+    
+    # <<<<<<<<<<<<<<<<<<  From solution
     html = browser.html
-    soup = BeautifulSoup(html, "html.parser")
+    weather_soup = BeautifulSoup(html, "html.parser")
 
-    results = soup.find_all('div', class_="content")
+    # First, find a tweet with the data-name `Mars Weather`
+    tweet_attrs = {"class": "tweet", "data-name": "Mars Weather"}
+    mars_weather_tweet = weather_soup.find("div", attrs=tweet_attrs)
 
-    mars_weather = results[0].find('p', class_="TweetTextSize TweetTextSize--normal js-tweet-text tweet-text").text
-    sep = 'pic.twitter'
-    mars_weather = mars_weather.split(sep, 1)[0]
-    mars_weather = mars_weather.replace("\n", ", ")
-
+    # Next, search within the tweet for the p tag containing the tweet text
+    mars_weather = mars_weather_tweet.find("p", "tweet-text").get_text()
+    # From solution >>>>>>>>>>>>>>>>>>>>>>>>
 
     ### Mars Facts ======= ###
     url = 'https://space-facts.com/mars/'
